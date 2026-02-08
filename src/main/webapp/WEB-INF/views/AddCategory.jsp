@@ -7,18 +7,19 @@
     <meta charset="UTF-8">
     <title>Add Category</title>
 
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Admin CSS -->
+    <jsp:include page="AdminCSS.jsp"></jsp:include>
 
     <style>
         body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            min-height: 100vh;
+            background: #f4f6f9;
+        /*     min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center; */
         }
         .category-card {
+        	margin-top:80px;
             background: #fff;
             border-radius: 10px;
             padding: 30px;
@@ -30,7 +31,14 @@
 
 <body>
 
-<div class="container">
+	<!-- Header -->
+	<jsp:include page="AdminHeader.jsp"></jsp:include>
+	
+	<!-- Sidebar -->
+	<jsp:include page="AdminSidebar.jsp"></jsp:include>
+	
+
+<div class="content">
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-6 col-lg-4">
             <div class="category-card">
@@ -64,6 +72,8 @@
         </div>
     </div>
 </div>
-
+	
+	<!-- Footer -->
+	<jsp:include page="AdminFooter.jsp"></jsp:include>
 </body>
 </html>
