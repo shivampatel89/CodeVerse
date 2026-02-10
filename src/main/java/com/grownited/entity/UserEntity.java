@@ -57,7 +57,7 @@ public class UserEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public LocalDate getCreatedAt(LocalDate createdAt) {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
 	public void setCreatedAt(LocalDate createdAt) {

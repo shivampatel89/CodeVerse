@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import com.grownited.entity.UserDetailEntity;
 import com.grownited.entity.UserEntity;
+import com.grownited.repository.UserDetailRepository;
 import com.grownited.repository.UserRepository;
 
 @Controller
@@ -15,6 +16,9 @@ public class SessionController {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	UserDetailRepository userDetailRepository;
 
 	@GetMapping("/signup")
 	public String openSignupPage() {
@@ -30,13 +34,15 @@ public class SessionController {
 		return "ForgetPassword";
 	}
 	@PostMapping("/register")
-	public String register(UserEntity userEntity) {
+	public String register(UserEntity userEntity,UserDetailEntity userDetailEntity) {
 		
 		
 		userEntity.setActive(true);
 		userEntity.setCreatedAt(LocalDate.now());
 		userEntity.setRole("Participant");
 		userRepository.save(userEntity);
+		userDetailEntity.setUserId(userEntity.getUserId()); 
+		userDetailRepository.save(userDetailEntity); 
 		return"Login";
 	}
 }
