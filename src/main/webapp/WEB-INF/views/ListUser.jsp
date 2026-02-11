@@ -18,7 +18,7 @@
 <jsp:include page="AdminHeader.jsp"></jsp:include>
 
 <!-- ================= SIDEBAR ================= -->
-<jsp:include page="AdminSidebar.jsp"></jsp:include>
+<jsp:include page="AdminLeftSidebar.jsp"></jsp:include>
 
 <!-- ================= CONTENT ================= -->
 <div class="content">

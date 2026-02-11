@@ -35,7 +35,7 @@
 	<jsp:include page="AdminHeader.jsp"></jsp:include>
 	
 	<!-- Header -->
-	<jsp:include page="AdminSidebar.jsp"></jsp:include>
+	<jsp:include page="AdminLeftSidebar.jsp"></jsp:include>
 	
 <div class="content">
     <div class="row justify-content-center">

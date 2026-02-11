@@ -1,83 +1,175 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Admin Dashboard</title>
-
-<!-- ==== CSS ==== -->
-<jsp:include page="AdminCSS.jsp"></jsp:include>
-</head>
-
-<body>
-
-<!-- ===== HEADER ===== -->
-<jsp:include page="AdminHeader.jsp"></jsp:include>
-
-<!-- ===== SIDEBAR ===== -->
-<jsp:include page="AdminSidebar.jsp"></jsp:include>
-
-<!-- ===== CONTENT ===== -->
-<div class="content">
-    <h4 class="mb-4">Dashboard Overview</h4>
-
-    <div class="row g-3">
-        <!-- Card 1 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <i class="bi bi-people fs-2 text-primary"></i>
-                    <h6 class="mt-2">Total Users</h6>
-                    <h4>120</h4>
+  <head>
+    <jsp:include page="AdminCSS.jsp"></jsp:include>
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_sidebar.html -->
+		<jsp:include page="AdminLeftSidebar.jsp"></jsp:include>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        <jsp:include page="AdminHeader.jsp"></jsp:include>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 class="mb-0">$12.34</h3>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="icon icon-box-success ">
+                          <span class="mdi mdi-arrow-top-right icon-item"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Potential growth</h6>
+                  </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <i class="bi bi-tags fs-2 text-success"></i>
-                    <h6 class="mt-2">Categories</h6>
-                    <h4>15</h4>
+              </div>
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 class="mb-0">$17.34</h3>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="icon icon-box-success">
+                          <span class="mdi mdi-arrow-top-right icon-item"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Revenue current</h6>
+                  </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <i class="bi bi-person-check fs-2 text-warning"></i>
-                    <h6 class="mt-2">Active Users</h6>
-                    <h4>98</h4>
+              </div>
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 class="mb-0">$12.34</h3>
+                          <p class="text-danger ml-2 mb-0 font-weight-medium">-2.4%</p>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="icon icon-box-danger">
+                          <span class="mdi mdi-arrow-bottom-left icon-item"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Daily Income</h6>
+                  </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <i class="bi bi-bar-chart fs-2 text-danger"></i>
-                    <h6 class="mt-2">Reports</h6>
-                    <h4>7</h4>
+              </div>
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 class="mb-0">$31.53</h3>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="icon icon-box-success ">
+                          <span class="mdi mdi-arrow-top-right icon-item"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Expense current</h6>
+                  </div>
                 </div>
+              </div>
             </div>
+  
+            <div class="row">
+              <div class="col-sm-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h5>Revenue</h5>
+                    <div class="row">
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h2 class="mb-0">$32123</h2>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">11.38% Since last month</h6>
+                      </div>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h5>Sales</h5>
+                    <div class="row">
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h2 class="mb-0">$45850</h2>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">+8.3%</p>
+                        </div>
+                        <h6 class="text-muted font-weight-normal"> 9.61% Since last month</h6>
+                      </div>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h5>Purchase</h5>
+                    <div class="row">
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h2 class="mb-0">$2039</h2>
+                          <p class="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">2.27% Since last month</h6>
+                      </div>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <i class="icon-lg mdi mdi-monitor text-success ml-auto"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <jsp:include page="AdminFooter.jsp"></jsp:include>
+          <!-- partial -->
         </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
     </div>
-</div>
-
-<!-- ===== FOOTER ===== -->
-<jsp:include page="AdminFooter.jsp"></jsp:include>
-
-<!-- ===== JS ===== -->
-<script>
-    document.querySelector(".menu-btn").onclick = function () {
-        document.querySelector(".sidebar").classList.toggle("show");
-    };
-</script>
-
-</body>
+    <!-- container-scroller -->
+  </body>
 </html>
