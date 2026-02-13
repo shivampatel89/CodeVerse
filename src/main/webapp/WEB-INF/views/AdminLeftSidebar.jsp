@@ -55,6 +55,7 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
+          
           <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#hackathonMenu" aria-expanded="false" aria-controls="ui-basic">
               <span class="menu-icon">
