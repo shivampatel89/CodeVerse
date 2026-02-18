@@ -3,6 +3,7 @@
 <html lang="en">
   <head>
     <jsp:include page="AdminCSS.jsp"></jsp:include>
+    <title>Admin Dashboard</title>
   </head>
   <body>
     <div class="container-scroller">

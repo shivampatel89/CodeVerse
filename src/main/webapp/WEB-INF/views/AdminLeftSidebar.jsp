@@ -1,27 +1,36 @@
+      <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-          <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
+           <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a> 
           <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+         
         </div>
         <ul class="nav">
           <li class="nav-item profile">
             <div class="profile-desc">
               <div class="profile-pic">
                 <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="assets/images/faces/face15.jpg" alt="">
+                <c:if test="${not empty sessionScope.user.profilePicURL}">
+                	<img class="img-xs rounded-circle " src="${sessionScope.user.profilePicURL}" alt="profile">
+                </c:if>
+                
+                <c:if test="${empty sessionScope.user.profilePicURL}">
+                	<img class="img-xs rounded-circle " src="assets/images/faces/dummy.jpg" alt="profile">
+                </c:if>
+                  
                   <span class="count bg-success"></span>
                 </div>
                 <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal">Henry Klein</h5>
-                  <span>Gold Member</span>
+                  <h5 class="mb-0 font-weight-normal">${sessionScope.user.firstName}</h5>
+                 <!--  <span>Gold Member</span> -->
                 </div>
               </div>
               <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
               <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
                 <a href="#" class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-settings text-primary"></i>
+                    <div class="preview-icon bg-dark rounded-circle"> 
+                       <i class="mdi mdi-settings text-primary"></i> -
                     </div>
                   </div>
                   <div class="preview-item-content">
