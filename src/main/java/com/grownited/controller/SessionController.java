@@ -12,6 +12,7 @@ import com.grownited.entity.UserDetailEntity;
 import com.grownited.entity.UserEntity;
 import com.grownited.repository.UserDetailRepository;
 import com.grownited.repository.UserRepository;
+import com.grownited.service.MailerService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,9 @@ public class SessionController {
 	
 	@Autowired
 	UserDetailRepository userDetailRepository;
+	
+	@Autowired
+	MailerService mailerService;
 
 	@GetMapping("/signup")
 	public String openSignupPage() {
@@ -63,7 +67,7 @@ public class SessionController {
 		return "ForgetPassword";
 	}
 	@PostMapping("/register")
-	public String register(UserEntity userEntity,UserDetailEntity userDetailEntity) {
+	public String register(UserEntity userEntity,UserDetailEntity userDetailEntity) throws Exception {
 		
 		
 		userEntity.setActive(true);
@@ -72,6 +76,8 @@ public class SessionController {
 		userRepository.save(userEntity);
 		userDetailEntity.setUserId(userEntity.getUserId()); 
 		userDetailRepository.save(userDetailEntity); 
+		//Welcome Mail Service 
+		mailerService.sendWelcomeMail(userEntity.getEmail(),userEntity.getFirstName());
 		return"Login";
 	}
 	
