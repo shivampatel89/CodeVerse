@@ -25,6 +25,7 @@ public class HackathonEntity {
 	private Integer userTypeId;
 	private LocalDate registrationStartDate;
 	private LocalDate registrationEndDate;
+	Integer userId;
 	
 	public Integer getHackathonId() {
 		return hackathonId;
@@ -91,6 +92,12 @@ public class HackathonEntity {
 	}
 	public void setRegistrationEndDate(LocalDate registrationEndDate) {
 		this.registrationEndDate = registrationEndDate;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	
 	
