@@ -45,7 +45,7 @@
                 <h3 class="text-center mb-4">Signup</h3>
 
                 <!-- multipart for file upload -->
-                <form action="/register" method="post" >
+                <form action="/register" method="post" enctype="multipart/form-data" >
 
                     <div class="mb-3">
                         <label class="form-label">First Name</label>
@@ -126,7 +126,7 @@
                     
                     <!-- City-->
                     <div class="mb-3">
-                        <label class="form-label">Cityr</label>
+                        <label class="form-label">City</label>
                         <input type="text" name="city"
                                class="form-control"
                                placeholder="Enter your city"
