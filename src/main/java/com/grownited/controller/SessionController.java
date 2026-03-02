@@ -19,9 +19,12 @@ import com.grownited.entity.UserEntity;
 import com.grownited.repository.UserDetailRepository;
 import com.grownited.repository.UserRepository;
 import com.grownited.service.MailerService;
+import com.grownited.service.OtpService;
 
 import jakarta.mail.Multipart;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class SessionController {
@@ -34,6 +37,9 @@ public class SessionController {
 
 	@Autowired
 	MailerService mailerService;
+	
+	@Autowired
+	OtpService otpService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -73,7 +79,7 @@ public class SessionController {
 		return "Login";
 	}
 
-	@GetMapping("/forgetpassword")
+	@GetMapping("/forgetPassword")
 	public String openForgetPasswordPage() {
 		return "ForgetPassword";
 	}
@@ -116,6 +122,50 @@ public class SessionController {
 		 
 		return "Login";
 	}
+	
+	@PostMapping("/sendOtp")
+	public String sendOtp(String email,Model model) throws Exception {
+		Optional<UserEntity> op=userRepository.findByEmail(email);
+		if(op.isEmpty()) {
+			model.addAttribute("error","User Not Found");
+			return "redirect:/forgetPassword";
+		}
+			
+			UserEntity user=op.get();
+			String otp = otpService.generateOtp();
+			user.setOtp(otp);
+			userRepository.save(user);
+		mailerService.sendOtpMail(email, otp);	
+		model.addAttribute("email",email);
+		return "VerifyOtp";
+	}
+	
+	@PostMapping("/verifyOtp")
+	public String verifyOtp(String email,String otp,Model model) {
+		Optional<UserEntity> op=userRepository.findByEmail(email);
+		UserEntity user=op.get();
+		
+		if(user.getOtp().equals(otp)) {
+			model.addAttribute("email",email);
+			return "ChangePassword";
+		}
+		model.addAttribute("error","Invalid OTP");
+		model.addAttribute("email",email);
+		return "VerifyOtp";
+	}
+	
+	@PostMapping("/changePassword")
+	public String postMethodName(String email,String password,Model model) {
+		Optional<UserEntity>op=userRepository.findByEmail(email);
+		UserEntity user=op.get();
+		String encodedPassword=passwordEncoder.encode(password);
+		System.out.println(encodedPassword);
+		user.setPassword(encodedPassword);
+		userRepository.save(user);
+		
+		return "redirect:/login";
+	}
+	
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {

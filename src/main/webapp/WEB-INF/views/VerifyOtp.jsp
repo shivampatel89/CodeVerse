@@ -8,7 +8,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Forgot Password</title>
+    <title>Verify OTP</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
@@ -29,31 +29,24 @@
           <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
-                <h3 class="card-title text-left mb-3">Forgot Password</h3>
-                <p class="text-left text-muted mb-4">
-                    Enter your registered email to reset your password
-                </p>
-                
-                <form action="/sendOtp" method="post">
+                <h3 class="card-title text-left mb-3"></h3>
+                <form action="/verifyOtp" method="post">
                   <div class="form-group">
-                    <label>Email</label>
-                    <input type="email"
-                               name="email"
-                               class="form-control"
-                               placeholder="Enter your registered email"
-                               required>
-
-                  </div>
-                  
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Send Reset Link</button>
+                  	<input type="hidden" name="email" value="${email}">
+                    <label>Enter OTP</label>
+                    <input type="text" name="otp" class="form-control p_input" required>
                   </div>
                   <div class="text-center">
-                    <a href="/login" class="text-decoration-none fw-semibold">
-                            ← Back to Login
+                    <button type="submit" class="btn btn-primary btn-block enter-btn">Verify</button>
+                  </div>
+                  <div class="text-center">
+                    <a href="/forgetPassword" class="text-decoration-none fw-semibold">
+                            ← Back 
                         </a>
                   </div>
-                  
+                 <!--  <p class="sign-up">Did't receive OTP? <a href="sendOtp">Resend OTP</a></p> -->
+                  <br>
+                  ${error}
                 </form>
               </div>
             </div>

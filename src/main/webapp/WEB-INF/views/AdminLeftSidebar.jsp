@@ -113,7 +113,7 @@
             </div>
           </li>
           
-          <li class="nav-item menu-items">
+          <!-- <li class="nav-item menu-items">
             <a class="nav-link" href="pages/tables/basic-table.html">
               <span class="menu-icon">
                 <i class="mdi mdi-table-large"></i>
@@ -166,7 +166,7 @@
               </span>
               <span class="menu-title">Documentation</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </nav><%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
