@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;CodeVerse/src/main/java/com/grownited/entity/UserType.java&apos; to &apos;UserTypeEntity.java&apos;" description="Rename resource &apos;UserType.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/java/com/grownited/entity/UserType.java" name="UserTypeEntity.java" stamp="1770274766315" updateReferences="true"/>
+</session>
