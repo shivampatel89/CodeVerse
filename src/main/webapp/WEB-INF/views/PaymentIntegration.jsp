@@ -1,0 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing Payment | CodeVerse</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            background-color: #020617;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loader {
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+        <h2>Initializing Secure Payment...</h2>
+        <p>Please do not refresh the page or click back.</p>
+    </div>
+
+    <form id="razorpayForm" action="/verify-payment" method="POST">
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+        <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+        <input type="hidden" name="hackathonId" value="${hackathon.hackathonId}">
+    </form>
+
+    <script>
+        var options = {
+            "key": "${keyId}",
+            "amount": "${amount}",
+            "currency": "INR",
+            "name": "CodeVerse",
+            "description": "Registration for ${hackathon.title}",
+            "order_id": "${orderId}",
+            "handler": function (response){
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('razorpayForm').submit();
+            },
+            "prefill": {
+                "name": "${user.firstName} ${user.lastName}",
+                "email": "${user.email}"
+            },
+            "theme": {
+                "color": "#6366f1"
+            },
+            "modal": {
+                "ondismiss": function(){
+                    window.location.href = "/hackathonDetails?hackathonId=${hackathon.hackathonId}&msg=PaymentCancelled";
+                }
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        window.onload = function() {
+            rzp1.open();
+        }
+    </script>
+</body>
+</html>

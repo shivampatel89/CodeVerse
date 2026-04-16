@@ -1,0 +1,156 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Details | CodeVerse</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --darkER: #020617;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--darkER);
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .registration-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 12px;
+            padding: 12px 15px;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.1);
+            color: white;
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #4f46e5;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="registration-card">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Almost <span class="text-primary">There!</span></h2>
+        <p class="text-secondary">Provide your project details to finalize registration for <strong>${hackathon.title}</strong>.</p>
+    </div>
+
+    <form action="/registerHackathon" method="post">
+        <input type="hidden" name="hackathonId" value="${hackathon.hackathonId}">
+        
+        <div class="mb-4" id="projectFields">
+            <label class="form-label">Problem Statement Title</label>
+            <input type="text" name="problemStatement" id="problemStatement" class="form-control" placeholder="What problem are you solving?" required>
+
+            <label class="form-label mt-3">PPT Solution Link (Google Drive/SlideShare)</label>
+            <input type="url" name="pptLink" id="pptLink" class="form-control" placeholder="https://drive.google.com/..." required>
+            <div class="form-text text-secondary mt-2">Ensure the link is viewable by anyone.</div>
+        </div>
+
+        <hr class="border-secondary my-4">
+
+        <h5 class="fw-bold mb-3 text-primary">Team Management</h5>
+        <div class="mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="teamOption" id="optCreate" value="create" checked onchange="toggleTeamInputs()">
+                <label class="form-check-label" for="optCreate">Create New Team</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="teamOption" id="optJoin" value="join" onchange="toggleTeamInputs()">
+                <label class="form-check-label" for="optJoin">Join Existing Team</label>
+            </div>
+        </div>
+
+        <div id="createTeamFields" class="mb-4">
+            <label class="form-label">Team Name</label>
+            <input type="text" name="teamName" id="teamName" class="form-control" placeholder="Enter a unique team name">
+        </div>
+
+        <div id="joinTeamFields" class="mb-4" style="display: none;">
+            <label class="form-label">Invite Code</label>
+            <input type="text" name="inviteCode" id="inviteCode" class="form-control" placeholder="XXXX-XXXX">
+        </div>
+
+        <button type="submit" class="btn btn-submit">
+            <c:choose>
+                <c:when test="${hackathon.fees > 0}">Continue to Payment ($${hackathon.fees})</c:when>
+                <c:otherwise>Complete Registration (FREE)</c:otherwise>
+            </c:choose>
+        </button>
+        
+        <div class="text-center mt-3">
+            <a href="/hackathonDetails?hackathonId=${hackathon.hackathonId}" class="text-secondary small text-decoration-none">
+                <i class="fas fa-arrow-left me-1"></i>Back to Hackathon Details
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleTeamInputs() {
+        const isCreate = document.getElementById('optCreate').checked;
+        document.getElementById('projectFields').style.display = isCreate ? 'block' : 'none';
+        document.getElementById('createTeamFields').style.display = isCreate ? 'block' : 'none';
+        document.getElementById('joinTeamFields').style.display = isCreate ? 'none' : 'block';
+        
+        document.getElementById('problemStatement').required = isCreate;
+        document.getElementById('pptLink').required = isCreate;
+        document.getElementById('teamName').required = isCreate;
+        document.getElementById('inviteCode').required = !isCreate;
+
+        if (!isCreate) {
+            document.getElementById('problemStatement').value = '';
+            document.getElementById('pptLink').value = '';
+            document.getElementById('teamName').value = '';
+        } else {
+            document.getElementById('inviteCode').value = '';
+        }
+    }
+    // Initialize required state
+    toggleTeamInputs();
+</script>
+
+</body>
+</html>

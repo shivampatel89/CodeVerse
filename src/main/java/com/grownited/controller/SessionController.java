@@ -21,9 +21,7 @@ import com.grownited.repository.UserRepository;
 import com.grownited.service.MailerService;
 import com.grownited.service.OtpService;
 
-import jakarta.mail.Multipart;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -59,19 +57,22 @@ public class SessionController {
 
 	@PostMapping("/authenticate")
 	public String authenticate(String email, String password, Model model, HttpSession session) {
-		Optional<UserEntity> op = userRepository.findByEmail(email);
+		Optional<UserEntity> op = userRepository.findTopByEmailOrderByUserIdDesc(email);
 		if (op.isPresent()) {
 			UserEntity dbUser = op.get();
-			session.setAttribute("user", dbUser);
-			if(passwordEncoder.matches(password,dbUser.getPassword())) {
-				if (dbUser.getRole().equals("Admin")) {
+			if (passwordEncoder.matches(password, dbUser.getPassword())) {
+				session.setAttribute("user", dbUser);
+				if (dbUser.getRole().equalsIgnoreCase("Admin")) {
 					return "redirect:/adminDashboard";
 
-				} else if (dbUser.getRole().equals("Participant")) {
+				} else if (dbUser.getRole().equalsIgnoreCase("Participant")) {
 					return "redirect:/participantDashboard";
 
-				} else if (dbUser.getRole().equals("Judge")) {
+				} else if (dbUser.getRole().equalsIgnoreCase("Judge")) {
 					return "redirect:/judgeDashboard";
+				} else {
+					model.addAttribute("error", "Role not recognized");
+					return "Login";
 				}
 			}
 		}
@@ -97,35 +98,41 @@ public class SessionController {
 		userEntity.setPassword(encodedPassword);
 		
 		//File Upload
+		if (profilePic != null && !profilePic.isEmpty()) {
+			try {
+				Map map = cloudinary.uploader().upload(profilePic.getBytes(), null);
+				String profilePicURL = map.get("secure_url").toString();
+				System.out.println(profilePicURL);
+				userEntity.setProfilePicURL(profilePicURL);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
-			Map map = 	cloudinary.uploader().upload(profilePic.getBytes(), null);
-			String profilePicURL = map.get("secure_url").toString();
-			System.out.println(profilePicURL);
-			userEntity.setProfilePicURL(profilePicURL);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 //Save User
-		  userRepository.save(userEntity);
-		  userDetailEntity.setUserId(userEntity.getUserId());
-		  userDetailRepository.save(userDetailEntity);
-		  
-		  //Welcome Mail Service
-		  try {
-			mailerService.sendWelcomeMail(userEntity.getEmail(),userEntity.getFirstName());
+			// Save User
+			userRepository.save(userEntity);
+			userDetailEntity.setUserId(userEntity.getUserId());
+			userDetailRepository.save(userDetailEntity);
+
+			// Welcome Mail Service
+			try {
+				mailerService.sendWelcomeMail(userEntity.getEmail(), userEntity.getFirstName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			// Handle duplicate email or other DB errors
+			return "redirect:/signup?error=RegistrationFailed";
 		}
-		 
+
 		return "Login";
 	}
 	
 	@PostMapping("/sendOtp")
 	public String sendOtp(String email,Model model) throws Exception {
-		Optional<UserEntity> op=userRepository.findByEmail(email);
+		Optional<UserEntity> op=userRepository.findTopByEmailOrderByUserIdDesc(email);
 		if(op.isEmpty()) {
 			model.addAttribute("error","User Not Found");
 			return "redirect:/forgetPassword";
@@ -142,7 +149,12 @@ public class SessionController {
 	
 	@PostMapping("/verifyOtp")
 	public String verifyOtp(String email,String otp,Model model) {
-		Optional<UserEntity> op=userRepository.findByEmail(email);
+		Optional<UserEntity> op=userRepository.findTopByEmailOrderByUserIdDesc(email);
+		if(op.isEmpty()) {
+			model.addAttribute("error","User Not Found");
+			model.addAttribute("email",email);
+			return "VerifyOtp";
+		}
 		UserEntity user=op.get();
 		
 		if(user.getOtp().equals(otp)) {
@@ -156,7 +168,11 @@ public class SessionController {
 	
 	@PostMapping("/changePassword")
 	public String postMethodName(String email,String password,Model model) {
-		Optional<UserEntity>op=userRepository.findByEmail(email);
+		Optional<UserEntity>op=userRepository.findTopByEmailOrderByUserIdDesc(email);
+		if(op.isEmpty()) {
+			model.addAttribute("error","User Not Found");
+			return "ChangePassword";
+		}
 		UserEntity user=op.get();
 		String encodedPassword=passwordEncoder.encode(password);
 		System.out.println(encodedPassword);

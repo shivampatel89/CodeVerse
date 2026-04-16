@@ -55,11 +55,14 @@
 										<th>Status</th>
 										<th>Event Type</th>
 										<th>Payment</th>
+										<th>Prize</th>
 										<th>Min Team</th>
 										<th>Max Team</th>
 										<th>Location</th>
 										<th>Reg Start</th>
 										<th>Reg End</th>
+										<th>Registrations</th>
+										<th>Submissions</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -77,14 +80,21 @@
 															${h.status} </span></td>
 													<td>${h.event_type}</td>
 													<td>${h.payment}</td>
+													<td><span class="text-warning fw-bold">${h.prizePool}</span></td>
 													<td>${h.minTeamSize}</td>
 													<td>${h.maxTeamSize}</td>
 													<td>${h.location}</td>
 													<td>${h.registrationStartDate}</td>
 													<td>${h.registrationEndDate}</td>
+													<td><span class="badge bg-secondary">${registrationCountMap[h.hackathonId]}</span></td>
+													<td><span class="badge bg-primary">${submissionCountMap[h.hackathonId]}</span></td>
 													<td><a
 														href="viewHackathon?hackathonId=${h.hackathonId}"
 														class="btn btn-outline-info btn-sm mb-1"> View </a> <a
+														href="viewRegistrations?hackathonId=${h.hackathonId}"
+														class="btn btn-outline-success btn-sm mb-1"> Regs </a> <a
+														href="viewSubmissions?hackathonId=${h.hackathonId}"
+														class="btn btn-outline-primary btn-sm mb-1"> Subs </a> <a
 														href="editHackathon?hackathonId=${h.hackathonId}"
 														class="btn btn-outline-warning btn-sm mb-1"> Edit </a> <a
 														href="deleteHackathon?hackathonId=${h.hackathonId}"
@@ -98,7 +108,7 @@
 
 										<c:otherwise>
 											<tr>
-												<td colspan="12" class="text-muted">No Hackathons Found
+												<td colspan="14" class="text-muted">No Hackathons Found
 												</td>
 											</tr>
 										</c:otherwise>

@@ -1,81 +1,78 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Forgot Password</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="../../assets/images/favicon.png" />
-  </head>
-  <body>
-    <div class="container-scroller">
-      <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="row w-100 m-0">
-          <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-            <div class="card col-lg-4 mx-auto">
-              <div class="card-body px-5 py-5">
-                <h3 class="card-title text-left mb-3">Forgot Password</h3>
-                <p class="text-left text-muted mb-4">
-                    Enter your registered email to reset your password
-                </p>
-                
-                <form action="/sendOtp" method="post">
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="email"
-                               name="email"
-                               class="form-control"
-                               placeholder="Enter your registered email"
-                               required>
-
-                  </div>
-                  
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Send Reset Link</button>
-                  </div>
-                  <div class="text-center">
-                    <a href="/login" class="text-decoration-none fw-semibold">
-                            ← Back to Login
-                        </a>
-                  </div>
-                  
-                </form>
-              </div>
-            </div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CodeVerse | Forgot Password</title>
+  <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#020617; --panel:rgba(15,23,42,.86); --panel-border:rgba(255,255,255,.08); --primary:#6366f1; --accent:#22d3ee; }
+    body {
+      font-family:'Outfit',sans-serif;
+      background: radial-gradient(circle at top left, rgba(99,102,241,.18), transparent 35%), radial-gradient(circle at bottom right, rgba(34,211,238,.12), transparent 30%), var(--bg);
+      color:#f8fafc;
+      min-height:100vh;
+    }
+    .auth-shell { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+    .auth-panel { width:100%; max-width:1100px; display:grid; grid-template-columns:1fr .95fr; gap:24px; }
+    .hero-card,.form-card { background:var(--panel); border:1px solid var(--panel-border); border-radius:24px; backdrop-filter:blur(12px); box-shadow:0 24px 60px rgba(0,0,0,.35); }
+    .hero-card { padding:44px; display:flex; flex-direction:column; justify-content:space-between; }
+    .hero-title { font-size:clamp(2rem,4vw,3.6rem); font-weight:800; line-height:1.05; margin-bottom:16px; }
+    .hero-title span { color:var(--primary); }
+    .hero-copy { color:#cbd5e1; line-height:1.7; max-width:560px; }
+    .pill { display:inline-block; padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#e2e8f0; font-size:.9rem; margin-right:10px; margin-top:12px; }
+    .form-card { padding:32px; display:flex; align-items:center; }
+    .form-control { background:rgba(255,255,255,.05)!important; border:1px solid rgba(255,255,255,.08)!important; color:#fff!important; border-radius:14px!important; min-height:48px; }
+    .form-control:focus { box-shadow:none!important; border-color:var(--primary)!important; }
+    .form-label { color:#cbd5e1; margin-bottom:8px; }
+    .btn-primary { background:linear-gradient(135deg, var(--primary), #4f46e5); border:none; border-radius:14px; min-height:48px; font-weight:700; }
+    .btn-primary:hover { color:#fff; }
+    .text-link { color:var(--accent); text-decoration:none; font-weight:600; }
+    .error-box { color:#fca5a5; margin-top:12px; text-align:center; }
+    @media (max-width: 991px) { .auth-panel { grid-template-columns:1fr; } .hero-card { padding:32px; } }
+  </style>
+</head>
+<body>
+  <div class="auth-shell">
+    <div class="auth-panel">
+      <div class="hero-card">
+        <div>
+          <div class="hero-title">Reset your <span>CodeVerse</span> password.</div>
+          <p class="hero-copy">Registered email daalo, OTP lo, aur naya password set karke wapas dashboard par aao.</p>
+          <div>
+            <span class="pill">Secure OTP</span>
+            <span class="pill">Quick reset</span>
+            <span class="pill">Back to login</span>
           </div>
-          <!-- content-wrapper ends -->
         </div>
-        <!-- row ends -->
       </div>
-      <!-- page-body-wrapper ends -->
+      <div class="form-card">
+        <div class="w-100">
+          <h3 class="mb-2 fw-bold">Forgot Password</h3>
+          <p class="mb-4 text-secondary">Enter your registered email to reset your password.</p>
+          <form action="/sendOtp" method="post">
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control" placeholder="Enter your registered email" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Send OTP</button>
+            <div class="text-center mt-3"><a href="/login" class="text-link">← Back to Login</a></div>
+          </form>
+          <c:if test="${not empty error}"><div class="error-box">${error}</div></c:if>
+        </div>
+      </div>
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../assets/js/off-canvas.js"></script>
-    <script src="../../assets/js/hoverable-collapse.js"></script>
-    <script src="../../assets/js/misc.js"></script>
-    <script src="../../assets/js/settings.js"></script>
-    <script src="../../assets/js/todolist.js"></script>
-    <!-- endinject -->
-  </body>
+  </div>
+  <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="../../assets/js/off-canvas.js"></script>
+  <script src="../../assets/js/hoverable-collapse.js"></script>
+  <script src="../../assets/js/misc.js"></script>
+  <script src="../../assets/js/settings.js"></script>
+  <script src="../../assets/js/todolist.js"></script>
+</body>
 </html>

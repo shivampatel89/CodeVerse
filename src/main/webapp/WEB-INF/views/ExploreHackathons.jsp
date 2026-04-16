@@ -1,0 +1,216 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Hackathons | CodeVerse</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --dark: #0f172a;
+            --darkER: #020617;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--darkER);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .hero-section {
+            padding: 80px 0;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.1), transparent);
+        }
+
+        .hackathon-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .hackathon-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-img-placeholder {
+            height: 160px;
+            background: linear-gradient(45deg, #1e293b, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .badge-premium {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .btn-premium {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-premium:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        .prize-pool {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .search-box {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+            box-shadow: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">CODE<span class="text-primary">VERSE</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="/explore">Explore</a></li>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.user}">
+                        <li class="nav-item"><a class="nav-link" href="/participantDashboard">Dashboard</a></li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="/logout" class="btn btn-outline-danger btn-sm rounded-pill px-4">Logout</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="/signup" class="btn btn-premium rounded-pill px-4">Sign Up</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-4">Unleash Your <span class="text-primary">Code</span></h1>
+        <p class="lead text-secondary mb-5">Join the world's most innovative hackathons and build the future.</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <input type="text" class="search-box" placeholder="Search hackathons, technologies, or themes...">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h3 class="fw-bold m-0">Open Hackathons</h3>
+        <div class="filters">
+            <select class="form-select bg-dark text-white border-secondary rounded-pill px-4">
+                <option>All Status</option>
+                <option>Upcoming</option>
+                <option>Ongoing</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <c:forEach var="h" items="${hackathons}">
+            <div class="col-lg-4 col-md-6">
+                <div class="hackathon-card p-3">
+                    <div class="card-img-placeholder rounded-4 mb-3">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge-premium">${h.status}</span>
+                        <span class="text-secondary small"><i class="far fa-calendar me-2"></i>${h.registrationStartDate}</span>
+                    </div>
+                    <h4 class="fw-bold mb-2">${h.title}</h4>
+                    <p class="text-secondary small mb-4">
+                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>${h.location} | 
+                        <i class="fas fa-users me-2 text-primary"></i>Up to ${h.maxTeamSize} per team
+                    </p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <p class="text-secondary mb-0 small">Prize Pool</p>
+                            <p class="prize-pool m-0">${h.prizePool}</p>
+                        </div>
+                        <div class="text-end">
+                            <p class="text-secondary mb-0 small">Entry Fee</p>
+                            <p class="fw-bold m-0 text-white">
+                                <c:choose>
+                                    <c:when test="${h.fees > 0}">$${h.fees}</c:when>
+                                    <c:otherwise><span class="text-success">FREE</span></c:otherwise>
+                                </c:choose>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <a href="/hackathonDetails?hackathonId=${h.hackathonId}" class="btn btn-premium w-100">View Details</a>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+
+<footer class="py-5 text-center text-secondary border-top border-secondary mt-5">
+    <p>&copy; 2026 CodeVerse Platform. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

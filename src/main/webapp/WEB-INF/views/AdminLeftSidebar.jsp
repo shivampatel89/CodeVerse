@@ -1,8 +1,8 @@
       <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-           <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a> 
-          <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+           <a class="sidebar-brand brand-logo text-white font-weight-bold" href="adminDashboard">Codverse Admin</a>
+          <a class="sidebar-brand brand-logo-mini text-white font-weight-bold" href="adminDashboard">CV</a>
          
         </div>
         <ul class="nav">
@@ -82,22 +82,6 @@
           </li>
           
           <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#categoryMenu" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-laptop"></i>
-              </span>
-              <span class="menu-title">Category</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse"  id="categoryMenu" >
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="addCategory">Add Category</a></li>
-                <li class="nav-item"> <a class="nav-link" href="listCategory">List Category</a></li>
-              </ul>
-            </div>
-          </li>
-          
-          <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#usersMenu" aria-expanded="false" aria-controls="ui-basic">
               <span class="menu-icon">
                 <i class="mdi mdi-laptop"></i>
@@ -160,7 +144,7 @@
           </li>
           
           <li class="nav-item menu-items">
-            <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
+            <a class="nav-link" href="#">
               <span class="menu-icon">
                 <i class="mdi mdi-file-document-box"></i>
               </span>

@@ -133,6 +133,27 @@
 											</div>
 										</div>
 
+										<!-- Row 3: Prize Pool & Fees -->
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<label class="form-label">Prize Pool</label> <input type="text"
+													name="prizePool" class="form-control" placeholder="e.g. $10,000">
+											</div>
+
+											<div class="col-md-6 mb-3">
+												<label class="form-label">Registration Fees</label> <input
+													type="number" step="0.01" name="fees" class="form-control"
+													placeholder="0.00 for free">
+											</div>
+										</div>
+
+										<!-- Description -->
+										<div class="mb-3">
+											<label class="form-label">Description</label>
+											<textarea name="description" class="form-control" rows="4" 
+												placeholder="Briefly describe the hackathon goals, rules, and technology stack..." required></textarea>
+										</div>
+
 										<!-- Location -->
 										<div class="mb-3">
 											<label class="form-label">Location</label> <input type="text"

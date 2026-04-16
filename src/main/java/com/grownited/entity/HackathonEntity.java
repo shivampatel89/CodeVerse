@@ -3,6 +3,7 @@ package com.grownited.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,6 +26,10 @@ public class HackathonEntity {
 	private Integer userTypeId;
 	private LocalDate registrationStartDate;
 	private LocalDate registrationEndDate;
+	private String prizePool;
+	private Double fees;
+	@Column(columnDefinition = "TEXT")
+	private String description;
 	Integer userId;
 	
 	public Integer getHackathonId() {
@@ -98,6 +103,24 @@ public class HackathonEntity {
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	public String getPrizePool() {
+		return prizePool;
+	}
+	public void setPrizePool(String prizePool) {
+		this.prizePool = prizePool;
+	}
+	public Double getFees() {
+		return fees;
+	}
+	public void setFees(Double fees) {
+		this.fees = fees;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

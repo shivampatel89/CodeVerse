@@ -4,6 +4,95 @@
   <head>
     <jsp:include page="AdminCSS.jsp"></jsp:include>
     <title>Admin Dashboard</title>
+    <style>
+      .admin-hero {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 22px;
+        background: linear-gradient(120deg, rgba(67, 97, 238, 0.2), rgba(58, 12, 163, 0.18));
+      }
+
+      .admin-hero h2 {
+        margin: 0;
+        font-weight: 700;
+        color: #ffffff;
+      }
+
+      .admin-hero p {
+        margin: 6px 0 0;
+        color: #cbd5e1;
+      }
+
+      .kpi-card {
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(15, 23, 42, 0.95));
+        height: 100%;
+      }
+
+      .kpi-card .card-body {
+        padding: 20px;
+      }
+
+      .kpi-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .kpi-label {
+        color: #94a3b8;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+      }
+
+      .kpi-value {
+        margin-top: 8px;
+        color: #ffffff;
+        font-size: 30px;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .kpi-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+      }
+
+      .kpi-icon.users { background: linear-gradient(135deg, #0284c7, #0ea5e9); }
+      .kpi-icon.completed { background: linear-gradient(135deg, #16a34a, #22c55e); }
+      .kpi-icon.active { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+      .kpi-icon.upcoming { background: linear-gradient(135deg, #ea580c, #f97316); }
+
+      .kpi-foot {
+        margin-top: 10px;
+        color: #a5b4fc;
+        font-size: 12px;
+      }
+
+      .admin-note-card {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.85);
+      }
+
+      .admin-note-card h5 {
+        color: #ffffff;
+        margin-bottom: 6px;
+      }
+
+      .admin-note-card p {
+        color: #cbd5e1;
+        margin-bottom: 0;
+      }
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -16,151 +105,73 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
+            <div class="admin-hero">
+              <h2>Admin Control Center</h2>
+            </div>
+
             <div class="row">
               <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card kpi-card">
                   <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">$12.34</h3>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="icon icon-box-success ">
-                          <span class="mdi mdi-arrow-top-right icon-item"></span>
-                        </div>
-                      </div>
+                    <div class="kpi-top">
+                      <div class="kpi-label">Active Users</div>
+                      <div class="kpi-icon users"><span class="mdi mdi-account-check"></span></div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Potential growth</h6>
+                    <div class="kpi-value">${activeUsersCount}</div>
+                    <div class="kpi-foot">Users with active account status</div>
                   </div>
                 </div>
               </div>
+
               <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card kpi-card">
                   <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">$17.34</h3>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="icon icon-box-success">
-                          <span class="mdi mdi-arrow-top-right icon-item"></span>
-                        </div>
-                      </div>
+                    <div class="kpi-top">
+                      <div class="kpi-label">Completed Hackathons</div>
+                      <div class="kpi-icon completed"><span class="mdi mdi-flag-checkered"></span></div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Revenue current</h6>
+                    <div class="kpi-value">${completedHackathonsCount}</div>
+                    <div class="kpi-foot">Status marked as completed</div>
                   </div>
                 </div>
               </div>
+
               <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card kpi-card">
                   <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">$12.34</h3>
-                          <p class="text-danger ml-2 mb-0 font-weight-medium">-2.4%</p>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="icon icon-box-danger">
-                          <span class="mdi mdi-arrow-bottom-left icon-item"></span>
-                        </div>
-                      </div>
+                    <div class="kpi-top">
+                      <div class="kpi-label">Active Hackathons</div>
+                      <div class="kpi-icon active"><span class="mdi mdi-rocket"></span></div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Daily Income</h6>
+                    <div class="kpi-value">${activeHackathonsCount}</div>
+                    <div class="kpi-foot">Currently running competitions</div>
                   </div>
                 </div>
               </div>
+
               <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card kpi-card">
                   <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">$31.53</h3>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="icon icon-box-success ">
-                          <span class="mdi mdi-arrow-top-right icon-item"></span>
-                        </div>
-                      </div>
+                    <div class="kpi-top">
+                      <div class="kpi-label">Upcoming Hackathons</div>
+                      <div class="kpi-icon upcoming"><span class="mdi mdi-calendar-clock"></span></div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Expense current</h6>
+                    <div class="kpi-value">${upcomingHackathonsCount}</div>
+                    <div class="kpi-foot">Upcoming status or future start date</div>
                   </div>
                 </div>
               </div>
             </div>
-  
+
             <div class="row">
-              <div class="col-sm-4 grid-margin">
-                <div class="card">
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card admin-note-card">
                   <div class="card-body">
-                    <h5>Revenue</h5>
-                    <div class="row">
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">$32123</h2>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
-                        </div>
-                        <h6 class="text-muted font-weight-normal">11.38% Since last month</h6>
-                      </div>
-                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-4 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h5>Sales</h5>
-                    <div class="row">
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">$45850</h2>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+8.3%</p>
-                        </div>
-                        <h6 class="text-muted font-weight-normal"> 9.61% Since last month</h6>
-                      </div>
-                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-4 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h5>Purchase</h5>
-                    <div class="row">
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">$2039</h2>
-                          <p class="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p>
-                        </div>
-                        <h6 class="text-muted font-weight-normal">2.27% Since last month</h6>
-                      </div>
-                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <i class="icon-lg mdi mdi-monitor text-success ml-auto"></i>
-                      </div>
-                    </div>
+                    <h5>Total Hackathons: ${totalHackathonsCount}</h5>
                   </div>
                 </div>
               </div>
             </div>
-            
-            
-            
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
