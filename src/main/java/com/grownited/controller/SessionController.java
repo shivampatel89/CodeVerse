@@ -126,7 +126,6 @@ public class SessionController {
 		
 		//Encode Password
 		String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
-		System.out.println(encodedPassword);
 		userEntity.setPassword(encodedPassword);
 		
 		//File Upload
@@ -134,7 +133,6 @@ public class SessionController {
 			try {
 				Map<?, ?> map = cloudinary.uploader().upload(profilePic.getBytes(), null);
 				String profilePicURL = map.get("secure_url").toString();
-				System.out.println(profilePicURL);
 				userEntity.setProfilePicURL(profilePicURL);
 			} catch (IOException e) {
 				logger.error("Failed to upload profile picture", e);
@@ -151,7 +149,7 @@ public class SessionController {
 			try {
 				mailerService.sendWelcomeMail(userEntity.getEmail(), userEntity.getFirstName());
 			} catch (Exception e) {
-				logger.error("Failed to send welcome email for user {}", userEntity.getEmail(), e);
+				logger.warn("Welcome email skipped for user {}: {}", userEntity.getEmail(), e.getMessage());
 			}
 		} catch (Exception e) {
 			logger.error("User registration failed for email {}", userEntity.getEmail(), e);
@@ -207,7 +205,6 @@ public class SessionController {
 		}
 		UserEntity user=op.get();
 		String encodedPassword=passwordEncoder.encode(password);
-		System.out.println(encodedPassword);
 		user.setPassword(encodedPassword);
 		userRepository.save(user);
 		

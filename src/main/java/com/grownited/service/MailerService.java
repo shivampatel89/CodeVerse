@@ -1,23 +1,45 @@
 package com.grownited.service;
 
-import jakarta.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import jakarta.mail.internet.MimeMessage;
+
 @Service
 public class MailerService {
+	private static final Logger logger = LoggerFactory.getLogger(MailerService.class);
 
 	@Autowired
 	private JavaMailSender mailSender;
 
+	@Value("${spring.mail.username:}")
+	private String fromEmail;
+
+	@Value("${app.base-url:http://localhost:8080}")
+	private String appBaseUrl;
+
+	@Value("${app.mail.welcome.enabled:true}")
+	private boolean welcomeMailEnabled;
+
+	@Value("${app.mail.otp.enabled:true}")
+	private boolean otpMailEnabled;
+
 	public void sendWelcomeMail(String to, String name) throws Exception {
+		if (!welcomeMailEnabled) {
+			logger.info("Welcome email disabled by config. Skipping email for {}", to);
+			return;
+		}
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-		String loginLink = "http://localhost:8080/login";
+		String loginLink = appBaseUrl + "/login";
 
 		String htmlContent = """
 				<!DOCTYPE html>
@@ -87,13 +109,24 @@ public class MailerService {
 				""".formatted(name, to, loginLink);
 
 		helper.setTo(to);
+		if (fromEmail != null && !fromEmail.isBlank()) {
+			helper.setFrom(fromEmail);
+		}
 		helper.setSubject("Welcome to CodeVerse 🎉");
 		helper.setText(htmlContent, true);
 
-		mailSender.send(message);
+		try {
+			mailSender.send(message);
+		} catch (MailException ex) {
+			throw new Exception("Mail send failed", ex);
+		}
 	}
 
 	public void sendOtpMail(String to, String otp) throws Exception {
+		if (!otpMailEnabled) {
+			logger.info("OTP email disabled by config. Skipping email for {}", to);
+			return;
+		}
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -125,6 +158,9 @@ public class MailerService {
 				""".formatted(otp);
 
 		helper.setTo(to);
+		if (fromEmail != null && !fromEmail.isBlank()) {
+			helper.setFrom(fromEmail);
+		}
 		helper.setSubject("Your OTP for Password Reset");
 		helper.setText(htmlContent, true);
 
