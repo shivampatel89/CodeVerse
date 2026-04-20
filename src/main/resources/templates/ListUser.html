@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:replace="~{AdminCSS}"></th:block>
+
+    <style>
+      .admin-header {
+        background-color: #1e3a8a;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .table thead th {
+        color: #fff;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+
+      .table tbody tr {
+        transition: 0.2s ease-in-out;
+        color: #fff;
+      }
+
+      .table tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-scroller">
+      <!-- sidebar -->
+      <th:block th:replace="~{AdminLeftSidebar}"></th:block>
+
+      <div class="container-fluid page-body-wrapper">
+        <!-- header -->
+        <th:block th:replace="~{AdminHeader}"></th:block>
+
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="card shadow-sm border-0">
+              <div class="card-header admin-header">
+                <h4 class="mb-4">User List</h4>
+              </div>
+
+              <div class="card-body table-responsive">
+                <table class="table table-hover align-middle text-center">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>SrNo</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Gender</th>
+                      <th>Birth Year</th>
+                      <th>Profile</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <!-- loop -->
+                    <tr th:each="u, s : ${users}">
+                      <td th:text="${s.count}"></td>
+
+                      <td th:text="${u.firstName + ' ' + u.lastName}"></td>
+
+                      <td th:text="${u.email}"></td>
+
+                      <td>
+                        <span
+                          class="badge bg-primary"
+                          th:text="${u.role}"
+                        ></span>
+                      </td>
+
+                      <td th:text="${u.gender}"></td>
+
+                      <td th:text="${u.birthYear}"></td>
+
+                      <td>
+                        <img
+                          th:src="${u.profilePicURL}"
+                          alt="Profile"
+                          width="40"
+                          height="40"
+                          class="rounded-circle"
+                        />
+                      </td>
+
+                      <td>
+                        <span th:if="${u.active}" class="badge bg-success"
+                          >Active</span
+                        >
+                        <span th:unless="${u.active}" class="badge bg-danger"
+                          >Inactive</span
+                        >
+                      </td>
+
+                      <td>
+                        <a
+                          th:href="@{/editUser(userId=${u.userId})}"
+                          class="btn btn-sm btn-warning"
+                          >Edit</a
+                        >
+
+                        <a
+                          th:href="@{/deleteUser(userId=${u.userId})}"
+                          class="btn btn-sm btn-danger"
+                          onclick="return confirm('Are you sure?');"
+                        >
+                          Delete
+                        </a>
+
+                        <a
+                          th:href="@{/viewUser(userId=${u.userId})}"
+                          class="btn btn-sm btn-info"
+                        >
+                          View
+                        </a>
+                      </td>
+                    </tr>
+
+                    <!-- empty case -->
+                    <tr th:if="${#lists.isEmpty(users)}">
+                      <td colspan="9" class="text-muted">No users found</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- footer -->
+          <th:block th:replace="~{AdminFooter}"></th:block>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

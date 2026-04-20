@@ -1,13 +1,14 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore Hackathons | CodeVerse</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #6366f1;
@@ -112,31 +113,42 @@
         }
     </style>
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="#">CODE<span class="text-primary">VERSE</span></a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a class="nav-link" href="/explore">Explore</a></li>
-                <c:choose>
-                    <c:when test="${not empty sessionScope.user}">
-                        <li class="nav-item"><a class="nav-link" href="/participantDashboard">Dashboard</a></li>
-                        <li class="nav-item ms-lg-3">
-                            <a href="/logout" class="btn btn-outline-danger btn-sm rounded-pill px-4">Logout</a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                        <li class="nav-item ms-lg-3">
-                            <a href="/signup" class="btn btn-premium rounded-pill px-4">Sign Up</a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/explore}">Explore</a>
+                </li>
+
+                <!-- IF USER LOGGED IN -->
+                <li class="nav-item" th:if="${session.user != null}">
+                    <a class="nav-link" th:href="@{/participantDashboard}">Dashboard</a>
+                </li>
+
+                <li class="nav-item ms-lg-3" th:if="${session.user != null}">
+                    <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm rounded-pill px-4">Logout</a>
+                </li>
+
+                <!-- IF NOT LOGGED IN -->
+                <li class="nav-item" th:if="${session.user == null}">
+                    <a class="nav-link" th:href="@{/login}">Login</a>
+                </li>
+
+                <li class="nav-item ms-lg-3" th:if="${session.user == null}">
+                    <a th:href="@{/signup}" class="btn btn-premium rounded-pill px-4">Sign Up</a>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -144,20 +156,28 @@
 
 <section class="hero-section text-center">
     <div class="container">
-        <h1 class="display-3 fw-bold mb-4">Unleash Your <span class="text-primary">Code</span></h1>
-        <p class="lead text-secondary mb-5">Join the world's most innovative hackathons and build the future.</p>
-        
+        <h1 class="display-3 fw-bold mb-4">
+            Unleash Your <span class="text-primary">Code</span>
+        </h1>
+
+        <p class="lead text-secondary mb-5">
+            Join the world's most innovative hackathons and build the future.
+        </p>
+
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <input type="text" class="search-box" placeholder="Search hackathons, technologies, or themes...">
+                <input type="text" class="search-box"
+                       placeholder="Search hackathons, technologies, or themes...">
             </div>
         </div>
     </div>
 </section>
 
 <div class="container py-5">
+
     <div class="d-flex justify-content-between align-items-center mb-5">
         <h3 class="fw-bold m-0">Open Hackathons</h3>
+
         <div class="filters">
             <select class="form-select bg-dark text-white border-secondary rounded-pill px-4">
                 <option>All Status</option>
@@ -168,42 +188,57 @@
     </div>
 
     <div class="row g-4">
-        <c:forEach var="h" items="${hackathons}">
-            <div class="col-lg-4 col-md-6">
-                <div class="hackathon-card p-3">
-                    <div class="card-img-placeholder rounded-4 mb-3">
-                        <i class="fas fa-terminal"></i>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge-premium">${h.status}</span>
-                        <span class="text-secondary small"><i class="far fa-calendar me-2"></i>${h.registrationStartDate}</span>
-                    </div>
-                    <h4 class="fw-bold mb-2">${h.title}</h4>
-                    <p class="text-secondary small mb-4">
-                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>${h.location} | 
-                        <i class="fas fa-users me-2 text-primary"></i>Up to ${h.maxTeamSize} per team
-                    </p>
-                    
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div>
-                            <p class="text-secondary mb-0 small">Prize Pool</p>
-                            <p class="prize-pool m-0">${h.prizePool}</p>
-                        </div>
-                        <div class="text-end">
-                            <p class="text-secondary mb-0 small">Entry Fee</p>
-                            <p class="fw-bold m-0 text-white">
-                                <c:choose>
-                                    <c:when test="${h.fees > 0}">$${h.fees}</c:when>
-                                    <c:otherwise><span class="text-success">FREE</span></c:otherwise>
-                                </c:choose>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <a href="/hackathonDetails?hackathonId=${h.hackathonId}" class="btn btn-premium w-100">View Details</a>
+
+        <!-- LOOP -->
+        <div class="col-lg-4 col-md-6" th:each="h : ${hackathons}">
+            <div class="hackathon-card p-3">
+
+                <div class="card-img-placeholder rounded-4 mb-3">
+                    <i class="fas fa-terminal"></i>
                 </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge-premium" th:text="${h.status}"></span>
+
+                    <span class="text-secondary small">
+                        <i class="far fa-calendar me-2"></i>
+                        <span th:text="${h.registrationStartDate}"></span>
+                    </span>
+                </div>
+
+                <h4 class="fw-bold mb-2" th:text="${h.title}"></h4>
+
+                <p class="text-secondary small mb-4">
+                    <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                    <span th:text="${h.location}"></span> |
+                    <i class="fas fa-users me-2 text-primary"></i>
+                    Up to <span th:text="${h.maxTeamSize}"></span> per team
+                </p>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <p class="text-secondary mb-0 small">Prize Pool</p>
+                        <p class="prize-pool m-0" th:text="${h.prizePool}"></p>
+                    </div>
+
+                    <div class="text-end">
+                        <p class="text-secondary mb-0 small">Entry Fee</p>
+
+                        <p class="fw-bold m-0 text-white">
+                            <span th:if="${h.fees > 0}" th:text="'$' + ${h.fees}"></span>
+                            <span th:if="${h.fees == 0}" class="text-success">FREE</span>
+                        </p>
+                    </div>
+                </div>
+
+                <a th:href="@{/hackathonDetails(hackathonId=${h.hackathonId})}"
+                   class="btn btn-premium w-100">
+                    View Details
+                </a>
+
             </div>
-        </c:forEach>
+        </div>
+
     </div>
 </div>
 
@@ -212,5 +247,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

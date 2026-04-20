@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class SessionController {
+	private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
 
 	@Autowired
 	UserRepository userRepository;
@@ -65,7 +68,11 @@ public class SessionController {
 		Optional<UserEntity> op = userRepository.findTopByEmailOrderByUserIdDesc(email);
 		if (op.isPresent()) {
 			UserEntity dbUser = op.get();
-			if (passwordEncoder.matches(password, dbUser.getPassword())) {
+			if (isPasswordValid(password, dbUser.getPassword())) {
+				if (isLegacyPasswordFormat(dbUser.getPassword())) {
+					dbUser.setPassword(passwordEncoder.encode(password));
+					userRepository.save(dbUser);
+				}
 				session.setAttribute("user", dbUser);
 				if (dbUser.getRole().equalsIgnoreCase("Admin")) {
 					return "redirect:/adminDashboard";
@@ -83,6 +90,26 @@ public class SessionController {
 		}
 		model.addAttribute("error", "Invalid Credentials");
 		return "Login";
+	}
+
+	private boolean isPasswordValid(String rawPassword, String storedPassword) {
+		if (rawPassword == null || storedPassword == null) {
+			return false;
+		}
+
+		try {
+			return passwordEncoder.matches(rawPassword, storedPassword);
+		} catch (IllegalArgumentException ex) {
+			// Backward compatibility for legacy plain-text passwords.
+			logger.warn("Legacy password format detected; using plain-text fallback check");
+			return rawPassword.equals(storedPassword);
+		}
+	}
+
+	private boolean isLegacyPasswordFormat(String storedPassword) {
+		return storedPassword != null && !storedPassword.startsWith("$2a$")
+				&& !storedPassword.startsWith("$2b$")
+				&& !storedPassword.startsWith("$2y$");
 	}
 
 	@GetMapping("/forgetPassword")
@@ -105,12 +132,12 @@ public class SessionController {
 		//File Upload
 		if (profilePic != null && !profilePic.isEmpty()) {
 			try {
-				Map map = cloudinary.uploader().upload(profilePic.getBytes(), null);
+				Map<?, ?> map = cloudinary.uploader().upload(profilePic.getBytes(), null);
 				String profilePicURL = map.get("secure_url").toString();
 				System.out.println(profilePicURL);
 				userEntity.setProfilePicURL(profilePicURL);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Failed to upload profile picture", e);
 			}
 		}
 
@@ -124,10 +151,10 @@ public class SessionController {
 			try {
 				mailerService.sendWelcomeMail(userEntity.getEmail(), userEntity.getFirstName());
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Failed to send welcome email for user {}", userEntity.getEmail(), e);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("User registration failed for email {}", userEntity.getEmail(), e);
 			// Handle duplicate email or other DB errors
 			return "redirect:/signup?error=RegistrationFailed";
 		}

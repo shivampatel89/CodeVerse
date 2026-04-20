@@ -1,16 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>CodeVerse | Reset Password</title>
+  <title>CodeVerse | Verify OTP</title>
+
   <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="../../assets/css/style.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root { --bg:#020617; --panel:rgba(15,23,42,.86); --panel-border:rgba(255,255,255,.08); --primary:#6366f1; --accent:#22d3ee; }
     body { font-family:'Outfit',sans-serif; background: radial-gradient(circle at top left, rgba(99,102,241,.18), transparent 35%), radial-gradient(circle at bottom right, rgba(34,211,238,.12), transparent 30%), var(--bg); color:#f8fafc; min-height:100vh; }
@@ -27,49 +28,80 @@
     .form-control:focus { box-shadow:none!important; border-color:var(--primary)!important; }
     .form-label { color:#cbd5e1; margin-bottom:8px; }
     .btn-primary { background:linear-gradient(135deg, var(--primary), #4f46e5); border:none; border-radius:14px; min-height:48px; font-weight:700; }
-    .btn-primary:hover { color:#fff; }
     .text-link { color:var(--accent); text-decoration:none; font-weight:600; }
     .error-box { color:#fca5a5; margin-top:12px; text-align:center; }
-    @media (max-width: 991px) { .auth-panel { grid-template-columns:1fr; } .hero-card { padding:32px; } }
   </style>
 </head>
+
 <body>
-  <div class="auth-shell">
-    <div class="auth-panel">
-      <div class="hero-card">
-        <div>
-          <div class="hero-title">Set a new <span>password</span>.</div>
-          <p class="hero-copy">OTP verify karne ke baad apna new password set karo aur account regain karo.</p>
-          <div>
-            <span class="pill">Secure update</span>
-            <span class="pill">Quick access</span>
-            <span class="pill">Back to login</span>
-          </div>
+
+<div class="auth-shell">
+  <div class="auth-panel">
+
+    <!-- HERO -->
+    <div class="hero-card">
+      <div>
+        <div class="hero-title">
+          Verify your <span>OTP</span>.
         </div>
-      </div>
-      <div class="form-card">
-        <div class="w-100">
-          <h3 class="mb-2 fw-bold">Reset Password</h3>
-          <p class="mb-4 text-secondary">Enter a strong new password for your account.</p>
-          <form action="/changePassword" method="post">
-            <input type="hidden" name="email" value="${email}">
-            <div class="mb-3">
-              <label class="form-label">New Password</label>
-              <input type="password" name="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Reset Password</button>
-            <div class="text-center mt-3"><a href="/login" class="text-link">← Back</a></div>
-          </form>
-          <c:if test="${not empty error}"><div class="error-box">${error}</div></c:if>
+
+        <p class="hero-copy">
+          Please enter the OTP sent to your registered email address to continue.
+        </p>
+
+        <div>
+          <span class="pill">Secure code</span>
+          <span class="pill">Fast verification</span>
+          <span class="pill">Reset access</span>
         </div>
       </div>
     </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+
+      <div class="w-100">
+
+        <h3 class="mb-2 fw-bold">Verify OTP</h3>
+        <p class="mb-4 text-secondary">Enter the one-time code sent to your email.</p>
+
+        <form th:action="@{/verifyOtp}" method="post">
+
+          <input type="hidden" name="email" th:value="${email}">
+
+          <div class="mb-3">
+            <label class="form-label">Enter OTP</label>
+            <input type="text" name="otp" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">
+            Verify
+          </button>
+
+          <div class="text-center mt-3">
+            <a th:href="@{/forgetPassword}" class="text-link">← Back</a>
+          </div>
+
+        </form>
+
+        <!-- ERROR -->
+        <div th:if="${error != null}" class="error-box">
+          <span th:text="${error}"></span>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
-  <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-  <script src="../../assets/js/off-canvas.js"></script>
-  <script src="../../assets/js/hoverable-collapse.js"></script>
-  <script src="../../assets/js/misc.js"></script>
-  <script src="../../assets/js/settings.js"></script>
-  <script src="../../assets/js/todolist.js"></script>
+</div>
+
+<script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
+<script src="../../assets/js/off-canvas.js"></script>
+<script src="../../assets/js/hoverable-collapse.js"></script>
+<script src="../../assets/js/misc.js"></script>
+<script src="../../assets/js/settings.js"></script>
+<script src="../../assets/js/todolist.js"></script>
+
 </body>
 </html>

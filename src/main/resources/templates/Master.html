@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- CSS include -->
+    <th:block th:replace="~{AdminCSS}"></th:block>
+  </head>
+
+  <body>
+    <div class="container-scroller">
+      <!-- sidebar -->
+      <th:block th:replace="~{AdminLeftSidebar}"></th:block>
+
+      <div class="container-fluid page-body-wrapper">
+        <!-- navbar -->
+        <th:block th:replace="~{AdminHeader}"></th:block>
+
+        <!-- main panel -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <!-- PAGE CONTENT AREA (EMPTY SAME AS JSP) -->
+            <!-- yahan tum apne pages add karoge -->
+          </div>
+
+          <!-- footer -->
+          <th:block th:replace="~{AdminFooter}"></th:block>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

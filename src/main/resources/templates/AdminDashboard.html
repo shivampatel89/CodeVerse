@@ -1,16 +1,22 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <jsp:include page="AdminCSS.jsp"></jsp:include>
+    <!-- CSS -->
+    <th:block th:replace="~{AdminCSS}"></th:block>
+
     <title>Admin Dashboard</title>
+
     <style>
       .admin-hero {
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 18px;
         padding: 24px;
         margin-bottom: 22px;
-        background: linear-gradient(120deg, rgba(67, 97, 238, 0.2), rgba(58, 12, 163, 0.18));
+        background: linear-gradient(
+          120deg,
+          rgba(67, 97, 238, 0.2),
+          rgba(58, 12, 163, 0.18)
+        );
       }
 
       .admin-hero h2 {
@@ -27,7 +33,11 @@
       .kpi-card {
         border-radius: 16px;
         border: 1px solid rgba(255, 255, 255, 0.08);
-        background: linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(15, 23, 42, 0.95));
+        background: linear-gradient(
+          180deg,
+          rgba(17, 24, 39, 0.9),
+          rgba(15, 23, 42, 0.95)
+        );
         height: 100%;
       }
 
@@ -66,10 +76,18 @@
         color: #ffffff;
       }
 
-      .kpi-icon.users { background: linear-gradient(135deg, #0284c7, #0ea5e9); }
-      .kpi-icon.completed { background: linear-gradient(135deg, #16a34a, #22c55e); }
-      .kpi-icon.active { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-      .kpi-icon.upcoming { background: linear-gradient(135deg, #ea580c, #f97316); }
+      .kpi-icon.users {
+        background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      }
+      .kpi-icon.completed {
+        background: linear-gradient(135deg, #16a34a, #22c55e);
+      }
+      .kpi-icon.active {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+      }
+      .kpi-icon.upcoming {
+        background: linear-gradient(135deg, #ea580c, #f97316);
+      }
 
       .kpi-foot {
         margin-top: 10px;
@@ -94,15 +112,16 @@
       }
     </style>
   </head>
+
   <body>
     <div class="container-scroller">
-      <!-- partial:partials/_sidebar.html -->
-		<jsp:include page="AdminLeftSidebar.jsp"></jsp:include>
-      <!-- partial -->
+      <!-- Sidebar -->
+      <th:block th:replace="~{AdminLeftSidebar}"></th:block>
+
       <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_navbar.html -->
-        <jsp:include page="AdminHeader.jsp"></jsp:include>
-        <!-- partial -->
+        <!-- Header -->
+        <th:block th:replace="~{AdminHeader}"></th:block>
+
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="admin-hero">
@@ -115,9 +134,11 @@
                   <div class="card-body">
                     <div class="kpi-top">
                       <div class="kpi-label">Active Users</div>
-                      <div class="kpi-icon users"><span class="mdi mdi-account-check"></span></div>
+                      <div class="kpi-icon users">
+                        <span class="mdi mdi-account-check"></span>
+                      </div>
                     </div>
-                    <div class="kpi-value">${activeUsersCount}</div>
+                    <div class="kpi-value" th:text="${activeUsersCount}"></div>
                     <div class="kpi-foot">Users with active account status</div>
                   </div>
                 </div>
@@ -128,9 +149,14 @@
                   <div class="card-body">
                     <div class="kpi-top">
                       <div class="kpi-label">Completed Hackathons</div>
-                      <div class="kpi-icon completed"><span class="mdi mdi-flag-checkered"></span></div>
+                      <div class="kpi-icon completed">
+                        <span class="mdi mdi-flag-checkered"></span>
+                      </div>
                     </div>
-                    <div class="kpi-value">${completedHackathonsCount}</div>
+                    <div
+                      class="kpi-value"
+                      th:text="${completedHackathonsCount}"
+                    ></div>
                     <div class="kpi-foot">Status marked as completed</div>
                   </div>
                 </div>
@@ -141,9 +167,14 @@
                   <div class="card-body">
                     <div class="kpi-top">
                       <div class="kpi-label">Active Hackathons</div>
-                      <div class="kpi-icon active"><span class="mdi mdi-rocket"></span></div>
+                      <div class="kpi-icon active">
+                        <span class="mdi mdi-rocket"></span>
+                      </div>
                     </div>
-                    <div class="kpi-value">${activeHackathonsCount}</div>
+                    <div
+                      class="kpi-value"
+                      th:text="${activeHackathonsCount}"
+                    ></div>
                     <div class="kpi-foot">Currently running competitions</div>
                   </div>
                 </div>
@@ -154,10 +185,17 @@
                   <div class="card-body">
                     <div class="kpi-top">
                       <div class="kpi-label">Upcoming Hackathons</div>
-                      <div class="kpi-icon upcoming"><span class="mdi mdi-calendar-clock"></span></div>
+                      <div class="kpi-icon upcoming">
+                        <span class="mdi mdi-calendar-clock"></span>
+                      </div>
                     </div>
-                    <div class="kpi-value">${upcomingHackathonsCount}</div>
-                    <div class="kpi-foot">Upcoming status or future start date</div>
+                    <div
+                      class="kpi-value"
+                      th:text="${upcomingHackathonsCount}"
+                    ></div>
+                    <div class="kpi-foot">
+                      Upcoming status or future start date
+                    </div>
                   </div>
                 </div>
               </div>
@@ -167,21 +205,19 @@
               <div class="col-12 grid-margin stretch-card">
                 <div class="card admin-note-card">
                   <div class="card-body">
-                    <h5>Total Hackathons: ${totalHackathonsCount}</h5>
+                    <h5
+                      th:text="'Total Hackathons: ' + ${totalHackathonsCount}"
+                    ></h5>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- content-wrapper ends -->
-          <!-- partial:partials/_footer.html -->
-          <jsp:include page="AdminFooter.jsp"></jsp:include>
-          <!-- partial -->
+
+          <!-- Footer -->
+          <th:block th:replace="~{AdminFooter}"></th:block>
         </div>
-        <!-- main-panel ends -->
       </div>
-      <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
   </body>
 </html>

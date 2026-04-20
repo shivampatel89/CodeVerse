@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="AdminCSS :: *"></div>
+
+    <style>
+    .admin-header {
+        background-color: #1e3a8a ;
+        color: #fff;
+        font-weight: 600;
+    }
+    .table thead th {
+        color:#fff;
+        font-size: 14px;
+    }
+    .table tbody tr {
+        color:#fff;
+    }
+    </style>
+</head>
+<body>
+    <div class="container-scroller">
+
+        <div th:replace="AdminLeftSidebar :: *"></div>
+
+        <div class="container-fluid page-body-wrapper">
+
+            <div th:replace="AdminHeader :: *"></div>
+
+            <div class="main-panel">
+                <div class="content-wrapper">
+
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header admin-header d-flex justify-content-between">
+                            <h5 class="mb-0">Hackathon Submissions</h5>
+                            <a th:href="@{/listHackathon}" class="btn btn-sm btn-light">Back</a>
+                        </div>
+
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Sr No</th>
+                                        <th>Team/User</th>
+                                        <th>PPT</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Submission Link</th>
+                                        <th>Submitted At</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <!-- submissions loop -->
+                                    <tr th:each="s,loop : ${submissions}">
+                                        <td th:text="${loop.count}"></td>
+
+                                        <td>
+                                            <span th:if="${s.teamId != null}">
+                                                <span th:if="${teamNameMap[s.teamId] != null}"
+                                                      th:text="'Team: ' + ${teamNameMap[s.teamId]}"></span>
+
+                                                <span th:if="${teamNameMap[s.teamId] == null}"
+                                                      th:text="'Team ID: ' + ${s.teamId}"></span>
+                                            </span>
+
+                                            <span th:if="${s.teamId == null}"
+                                                  th:text="'User ID: ' + ${s.userId}"></span>
+                                        </td>
+
+                                        <td>
+                                            <a th:if="${s.teamId != null and teamPptMap[s.teamId] != null}"
+                                               th:href="${teamPptMap[s.teamId]}" target="_blank"
+                                               class="btn btn-xs btn-outline-success">View PPT</a>
+
+                                            <a th:if="${s.teamId == null and userPptMap[s.userId] != null}"
+                                               th:href="${userPptMap[s.userId]}" target="_blank"
+                                               class="btn btn-xs btn-outline-success">View PPT</a>
+
+                                            <span th:if="${(s.teamId != null and teamPptMap[s.teamId] == null) 
+                                                          or (s.teamId == null and userPptMap[s.userId] == null)}"
+                                                  class="text-warning">Not available</span>
+                                        </td>
+
+                                        <td><strong th:text="${s.title}"></strong></td>
+
+                                        <td><small th:text="${s.description}"></small></td>
+
+                                        <td>
+                                            <a th:href="${s.submissionLink}" target="_blank"
+                                               class="btn btn-xs btn-outline-info">View Project</a>
+                                        </td>
+
+                                        <td th:text="${s.submissionDate}"></td>
+                                    </tr>
+
+                                    <!-- fallback: registrations -->
+                                    <tr th:if="${#lists.isEmpty(submissions) and !#lists.isEmpty(registrations)}"
+                                        th:each="r,loop : ${registrations}">
+                                        
+                                        <td th:text="${loop.count}"></td>
+
+                                        <td>
+                                            <span th:if="${r.teamId != null and teamNameMap[r.teamId] != null}"
+                                                  th:text="'Team: ' + ${teamNameMap[r.teamId]}"></span>
+
+                                            <span th:if="${r.teamId != null and teamNameMap[r.teamId] == null}"
+                                                  th:text="'Team ID: ' + ${r.teamId}"></span>
+
+                                            <span th:if="${r.teamId == null}"
+                                                  th:text="'User ID: ' + ${r.userId}"></span>
+                                        </td>
+
+                                        <td>
+                                            <a th:if="${r.pptLink != null}"
+                                               th:href="${r.pptLink}" target="_blank"
+                                               class="btn btn-xs btn-outline-success">View PPT</a>
+
+                                            <span th:if="${r.pptLink == null}"
+                                                  class="text-warning">Not available</span>
+                                        </td>
+
+                                        <td><strong th:text="${r.problemStatement}"></strong></td>
+
+                                        <td>
+                                            <small>Registered, final solution not submitted yet.</small>
+                                        </td>
+
+                                        <td>
+                                            <span class="text-warning">Not submitted yet</span>
+                                        </td>
+
+                                        <td th:text="${r.registrationDate}"></td>
+                                    </tr>
+
+                                    <!-- empty case -->
+                                    <tr th:if="${#lists.isEmpty(submissions) and #lists.isEmpty(registrations)}">
+                                        <td colspan="7" class="text-center text-secondary py-4">
+                                            No submissions yet.
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div th:replace="AdminFooter :: *"></div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

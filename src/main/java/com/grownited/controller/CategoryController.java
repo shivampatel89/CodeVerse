@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.grownited.entity.CategoryEntity;
 import com.grownited.repository.CategoryRepository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 

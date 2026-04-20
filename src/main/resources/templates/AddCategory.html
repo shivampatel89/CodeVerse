@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Replace JSP include -->
+    <div th:replace="~{AdminCSS}"></div>
+
+    <style>
+      .admin-header {
+        background: #1e3a8a;
+        color: #fff;
+      }
+
+      .card-body {
+        background: #e9ecef;
+      }
+
+      .form-label {
+        color: #111827 !important;
+        font-weight: 600;
+      }
+
+      .form-control,
+      .form-select {
+        background: #f8f9fa;
+        border: 1px solid #ced4da;
+        color: #111827 !important;
+        height: 45px;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        color: #111827 !important;
+        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-scroller">
+      <!-- Sidebar -->
+      <div th:replace="~{AdminLeftSidebar}"></div>
+
+      <div class="container-fluid page-body-wrapper">
+        <!-- Navbar -->
+        <div th:replace="~{AdminHeader}"></div>
+
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row justify-content-center">
+              <div class="col-lg-8 col-md-10 col-12">
+                <div class="card shadow">
+                  <div class="card-header admin-header">
+                    <h4 class="mb-0">Add Category</h4>
+                  </div>
+
+                  <div class="card-body">
+                    <form th:action="@{/saveCategory}" method="post">
+                      <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input
+                          type="text"
+                          name="categoryName"
+                          class="form-control"
+                          placeholder="Enter category name"
+                          required
+                        />
+                      </div>
+
+                      <button type="submit" class="btn btn-primary w-100">
+                        Save Category
+                      </button>
+
+                      <div class="text-center mt-3">
+                        <a th:href="@{/}" class="text-decoration-none">
+                          Back to Dashboard
+                        </a>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div th:replace="~{AdminFooter}"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

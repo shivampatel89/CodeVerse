@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:replace="~{AdminCSS}"></th:block>
+
+    <style>
+      .admin-header {
+        background-color: #1e3a8a;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .table thead th {
+        color: #fff;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+
+      .table tbody tr {
+        transition: 0.2s ease-in-out;
+        color: #fff;
+      }
+
+      .table tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-scroller">
+      <!-- sidebar -->
+      <th:block th:replace="~{AdminLeftSidebar}"></th:block>
+
+      <div class="container-fluid page-body-wrapper">
+        <!-- header -->
+        <th:block th:replace="~{AdminHeader}"></th:block>
+
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="card shadow-sm border-0">
+              <div class="card-header admin-header">
+                <h5 class="mb-0">Hackathon List</h5>
+              </div>
+
+              <div class="card-body table-responsive">
+                <table class="table table-hover align-middle text-center">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Sr No</th>
+                      <th>Title</th>
+                      <th>Status</th>
+                      <th>Event Type</th>
+                      <th>Payment</th>
+                      <th>Prize</th>
+                      <th>Min Team</th>
+                      <th>Max Team</th>
+                      <th>Location</th>
+                      <th>Reg Start</th>
+                      <th>Reg End</th>
+                      <th>Registrations</th>
+                      <th>Submissions</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <!-- if list not empty -->
+                    <tr th:if="${#lists.isEmpty(hackathonList)}">
+                      <td colspan="14" class="text-muted">
+                        No Hackathons Found
+                      </td>
+                    </tr>
+
+                    <!-- loop -->
+                    <tr th:each="h, loop : ${hackathonList}">
+                      <td th:text="${loop.count}"></td>
+
+                      <td th:text="${h.title}"></td>
+
+                      <td>
+                        <span
+                          th:classappend="${h.status == 'Active'} ? 'badge bg-success' : 'badge bg-info'"
+                          th:text="${h.status}"
+                        >
+                        </span>
+                      </td>
+
+                      <td th:text="${h.event_type}"></td>
+
+                      <td th:text="${h.payment}"></td>
+
+                      <td>
+                        <span
+                          class="text-warning fw-bold"
+                          th:text="${h.prizePool}"
+                        ></span>
+                      </td>
+
+                      <td th:text="${h.minTeamSize}"></td>
+
+                      <td th:text="${h.maxTeamSize}"></td>
+
+                      <td th:text="${h.location}"></td>
+
+                      <td th:text="${h.registrationStartDate}"></td>
+
+                      <td th:text="${h.registrationEndDate}"></td>
+
+                      <td>
+                        <span
+                          class="badge bg-secondary"
+                          th:text="${registrationCountMap[h.hackathonId]}"
+                        >
+                        </span>
+                      </td>
+
+                      <td>
+                        <span
+                          class="badge bg-primary"
+                          th:text="${submissionCountMap[h.hackathonId]}"
+                        >
+                        </span>
+                      </td>
+
+                      <td>
+                        <a
+                          th:href="@{/viewHackathon(hackathonId=${h.hackathonId})}"
+                          class="btn btn-outline-info btn-sm mb-1"
+                          >View</a
+                        >
+
+                        <a
+                          th:href="@{/viewRegistrations(hackathonId=${h.hackathonId})}"
+                          class="btn btn-outline-success btn-sm mb-1"
+                          >Regs</a
+                        >
+
+                        <a
+                          th:href="@{/viewSubmissions(hackathonId=${h.hackathonId})}"
+                          class="btn btn-outline-primary btn-sm mb-1"
+                          >Subs</a
+                        >
+
+                        <a
+                          th:href="@{/editHackathon(hackathonId=${h.hackathonId})}"
+                          class="btn btn-outline-warning btn-sm mb-1"
+                          >Edit</a
+                        >
+
+                        <a
+                          th:href="@{/deleteHackathon(hackathonId=${h.hackathonId})}"
+                          class="btn btn-outline-danger btn-sm mb-1"
+                          onclick="
+                            return confirm(
+                              'Are you sure you want to delete this hackathon?',
+                            );
+                          "
+                        >
+                          Delete
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- footer -->
+          <th:block th:replace="~{AdminFooter}"></th:block>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

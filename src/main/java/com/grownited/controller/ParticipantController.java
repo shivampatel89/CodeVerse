@@ -1,7 +1,7 @@
 package com.grownited.controller;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,20 +77,20 @@ public class ParticipantController {
         model.addAttribute("statusFilter", statusFilter);
         
         // Fetch team details
-        java.util.Map<String, TeamEntity> teamMap = new java.util.HashMap<>();
+        java.util.Map<Integer, TeamEntity> teamMap = new java.util.HashMap<>();
         for (ParticipantRegistrationEntity reg : regs) {
             if (reg.getTeamId() != null) {
-                teamRepository.findById(reg.getTeamId()).ifPresent(t -> teamMap.put(String.valueOf(t.getTeamId()), t));
+                teamRepository.findById(reg.getTeamId()).ifPresent(t -> teamMap.put(t.getTeamId(), t));
             }
         }
         model.addAttribute("teamMap", teamMap);
 
         // For teams led by current user, show who joined in that team.
-        java.util.Map<String, java.util.List<UserEntity>> teamMembersMap = new java.util.HashMap<>();
+        java.util.Map<Integer, java.util.List<UserEntity>> teamMembersMap = new java.util.HashMap<>();
         for (ParticipantRegistrationEntity reg : regs) {
             if (reg.getTeamId() == null) continue;
 
-            TeamEntity team = teamMap.get(String.valueOf(reg.getTeamId()));
+            TeamEntity team = teamMap.get(reg.getTeamId());
             if (team == null || team.getLeaderId() == null || !team.getLeaderId().equals(user.getUserId())) continue;
 
             java.util.List<ParticipantRegistrationEntity> teamRegs = registrationRepository.findByTeamId(reg.getTeamId());
@@ -98,12 +98,12 @@ public class ParticipantController {
             for (ParticipantRegistrationEntity teamReg : teamRegs) {
                 userRepository.findById(teamReg.getUserId()).ifPresent(members::add);
             }
-            teamMembersMap.put(String.valueOf(reg.getTeamId()), members);
+            teamMembersMap.put(reg.getTeamId(), members);
         }
         model.addAttribute("teamMembersMap", teamMembersMap);
 
         // Track submission status per hackathon for dashboard actions.
-        java.util.Map<String, Boolean> submittedMap = new java.util.HashMap<>();
+        java.util.Map<Integer, Boolean> submittedMap = new java.util.HashMap<>();
         for (ParticipantRegistrationEntity reg : regs) {
             boolean alreadySubmitted;
             if (reg.getTeamId() != null) {
@@ -115,7 +115,7 @@ public class ParticipantController {
                         .findByHackathonIdAndUserId(reg.getHackathonId(), user.getUserId())
                         .isPresent();
             }
-            submittedMap.put(String.valueOf(reg.getHackathonId()), alreadySubmitted);
+            submittedMap.put(reg.getHackathonId(), alreadySubmitted);
         }
         model.addAttribute("submittedMap", submittedMap);
 

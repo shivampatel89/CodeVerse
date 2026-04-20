@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Add New User Type</title>
@@ -27,23 +28,30 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+
             <div class="card shadow">
                 <div class="card-body p-4">
 
                     <h4 class="text-center mb-4">Add New User Type</h4>
 
-                    <form action="/saveUserType" method="post">
+                    <form th:action="@{/saveUserType}" method="post">
 
                         <div class="mb-3">
                             <label class="form-label">User Type</label>
-                            <input type="text" name ="userType" class="form-control" placeholder="Enter user type" required>
+
+                            <input type="text"
+                                   name="userType"
+                                   class="form-control"
+                                   placeholder="Enter user type"
+                                   required>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 mb-2">
                             Save User Type
                         </button>
 
-                        <a href="/adminDashboard" class="btn btn-outline-secondary w-100">
+                        <a th:href="@{/adminDashboard}"
+                           class="btn btn-outline-secondary w-100">
                             Back to Dashboard
                         </a>
 
@@ -51,6 +59,7 @@
 
                 </div>
             </div>
+
         </div>
     </div>
 </div>

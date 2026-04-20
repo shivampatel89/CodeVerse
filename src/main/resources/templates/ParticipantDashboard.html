@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Dashboard | CodeVerse</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #6366f1;
+        --darkER: #020617;
+        --glass: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.1);
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: var(--darkER);
+        color: #f8fafc;
+      }
+
+      .dashboard-header {
+        padding: 60px 0;
+        background: linear-gradient(
+          90deg,
+          rgba(99, 102, 241, 0.1),
+          transparent
+        );
+      }
+
+      .stat-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 25px;
+        text-align: center;
+      }
+
+      .info-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        color: #f8fafc;
+      }
+
+      .info-card h4 {
+        color: var(--primary) !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .table-glass {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        overflow: hidden;
+        color: #f8fafc;
+      }
+
+      .table-glass th {
+        border-bottom: 1px solid var(--glass-border);
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f8fafc !important;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+
+      .table-glass td {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .btn-glass {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+
+      .btn-glass:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .modal-content {
+        background: #1e293b;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent pt-4">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/explore">
+          CODE<span class="text-primary">VERSE</span>
+        </a>
+
+        <div class="ms-auto d-flex align-items-center">
+          <span class="me-3 d-none d-md-block">
+            Hello, <span th:text="${session.user.firstName}"></span>
+          </span>
+          <a
+            href="/logout"
+            class="btn btn-outline-danger btn-sm rounded-pill px-4"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+      <div class="container">
+        <h1 class="fw-bold">
+          Participant <span class="text-primary">Dashboard</span>
+        </h1>
+        <p class="text-secondary">
+          Manage your registrations, teams, and submissions.
+        </p>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="container py-5">
+      <div class="row g-4 mb-5">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <i class="fas fa-trophy mb-3 text-primary fa-2x"></i>
+            <h5 class="text-secondary">Active Hackathons</h5>
+            <h2 class="fw-bold" th:text="${totalHackathons}"></h2>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="stat-card">
+            <i class="fas fa-user-check mb-3 text-success fa-2x"></i>
+            <h5 class="text-secondary">My Registrations</h5>
+            <h2 class="fw-bold" th:text="${myRegistrationsCount}"></h2>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="stat-card">
+            <i class="fas fa-paper-plane mb-3 text-info fa-2x"></i>
+            <h5 class="text-secondary">Submissions</h5>
+            <h2 class="fw-bold" th:text="${mySubmissionsCount}"></h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERT -->
+      <div
+        th:if="${param.msg != null}"
+        class="alert alert-success bg-success text-white border-0 rounded-4 mb-4"
+      >
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${param.msg}"></span>
+
+        <span th:if="${param.inviteCode != null}">
+          Your Invite Code:
+          <strong th:text="${param.inviteCode}"></strong>
+        </span>
+      </div>
+
+      <!-- TABLE -->
+      <div class="row">
+        <div class="col-12">
+          <div class="info-card p-0 overflow-hidden">
+            <div class="p-4 d-flex justify-content-between align-items-center">
+              <h4 class="fw-bold m-0">My Hackathons</h4>
+              <a
+                href="/explore"
+                class="btn btn-primary rounded-pill px-4 btn-sm"
+                >Join More</a
+              >
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-glass m-0">
+                <thead>
+                  <tr>
+                    <th>Hackathon</th>
+                    <th>Status</th>
+                    <th>Problem Statement</th>
+                    <th>PPT Solution</th>
+                    <th>Payment</th>
+                    <th>Team</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr th:each="reg : ${userRegistrations}">
+                    <td>
+                      <div
+                        class="fw-bold"
+                        th:text="${hackathonMap[reg.hackathonId].title}"
+                      ></div>
+
+                      <div class="small text-secondary">
+                        Registered on
+                        <span th:text="${reg.registrationDate}"></span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <span
+                        class="badge bg-info text-dark"
+                        th:text="${hackathonMap[reg.hackathonId].status}"
+                      ></span>
+                    </td>
+
+                    <td>
+                      <span
+                        class="text-secondary small"
+                        th:text="${reg.problemStatement}"
+                      ></span>
+                    </td>
+
+                    <td>
+                      <a
+                        th:href="${reg.pptLink}"
+                        target="_blank"
+                        class="btn btn-glass btn-sm"
+                      >
+                        <i class="fas fa-external-link-alt me-1"></i>View PPT
+                      </a>
+                    </td>
+
+                    <td>
+                      <span
+                        class="badge"
+                        th:classappend="${reg.paymentStatus == 'Success'} ? 'bg-success' : 'bg-warning'"
+                        th:text="${reg.paymentStatus}"
+                      >
+                      </span>
+                    </td>
+
+                    <td>
+                      <span
+                        th:if="${reg.teamId != null and teamMap[reg.teamId] != null}"
+                      >
+                        <div
+                          class="fw-bold text-info"
+                          th:text="${teamMap[reg.teamId].teamName}"
+                        ></div>
+
+                        <div class="small">
+                          Code:
+                          <span
+                            class="text-warning"
+                            th:text="${teamMap[reg.teamId].inviteCode}"
+                          ></span>
+                        </div>
+                      </span>
+
+                      <span
+                        th:unless="${reg.teamId != null and teamMap[reg.teamId] != null}"
+                        class="text-secondary small"
+                      >
+                        Individual
+                      </span>
+                    </td>
+
+                    <td>
+                      <span th:if="${submittedMap[reg.hackathonId] == true}">
+                        <span class="badge bg-success">
+                          Already Submitted
+                        </span>
+                      </span>
+
+                      <a
+                        th:if="${submittedMap[reg.hackathonId] != true}"
+                        th:href="@{/submitSolution(hackathonId=${reg.hackathonId})}"
+                        class="btn btn-glass btn-sm text-info"
+                      >
+                        Submit
+                      </a>
+                    </td>
+                  </tr>
+
+                  <tr th:if="${#lists.isEmpty(userRegistrations)}">
+                    <td colspan="7" class="text-center text-secondary py-5">
+                      Browse the <a href="/explore">Explore Page</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="py-5 text-center text-secondary border-top mt-5">
+      <p>&copy; 2026 CodeVerse Platform</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
