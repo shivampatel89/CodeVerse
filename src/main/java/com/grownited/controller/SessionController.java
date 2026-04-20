@@ -45,6 +45,11 @@ public class SessionController {
 	@Autowired
 	Cloudinary cloudinary;
 
+// 	@GetMapping("/")
+// public String home() {
+//     return "redirect:/Login";
+// }
+
 	@GetMapping("/signup")
 	public String openSignupPage() {
 		return "Signup"; // jsp name
