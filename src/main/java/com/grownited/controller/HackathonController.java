@@ -9,12 +9,15 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.grownited.entity.HackathonEntity;
 import com.grownited.entity.ParticipantRegistrationEntity;
@@ -33,6 +36,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HackathonController {
+	private static final Logger logger = LoggerFactory.getLogger(HackathonController.class);
 	
 	@Autowired
 	HackathonRepository hackathonRepository;
@@ -48,11 +52,23 @@ public class HackathonController {
 	}
 	
 	@PostMapping("saveHackathon")
-	public String saveHackathon(HackathonEntity hackathonEntity,HttpSession session) {
-		UserEntity currentLoginUser=(UserEntity) session.getAttribute("user");
-		hackathonEntity.setUserId(currentLoginUser.getUserId());
-		hackathonRepository.save(hackathonEntity);
-		return"redirect:/listHackathon";
+	public String saveHackathon(HackathonEntity hackathonEntity, HttpSession session, RedirectAttributes redirectAttributes) {
+		UserEntity currentLoginUser = (UserEntity) session.getAttribute("user");
+		if (currentLoginUser == null) {
+			redirectAttributes.addFlashAttribute("error", "Session expired. Please login again.");
+			return "redirect:/login";
+		}
+
+		try {
+			hackathonEntity.setUserId(currentLoginUser.getUserId());
+			hackathonRepository.save(hackathonEntity);
+			redirectAttributes.addFlashAttribute("success", "Hackathon saved successfully.");
+			return "redirect:/listHackathon";
+		} catch (Exception ex) {
+			logger.error("Failed to save hackathon for userId={}", currentLoginUser.getUserId(), ex);
+			redirectAttributes.addFlashAttribute("error", "Unable to save hackathon. Please check required fields and try again.");
+			return "redirect:/addHackathon";
+		}
 	}
 	
 	@GetMapping("listHackathon")
