@@ -122,7 +122,7 @@ public class SessionController {
 
 		userEntity.setActive(true);
 		userEntity.setCreatedAt(LocalDate.now());
-		userEntity.setRole("Participant");
+		userEntity.setRole("Admin");
 		
 		//Encode Password
 		String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
